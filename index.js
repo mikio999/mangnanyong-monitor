@@ -46,17 +46,21 @@ const REPLY_TEMPLATES = [
   { label: "✏️ 직접 입력", value: "CUSTOM" },
 ];
 
-// ✅ Make → 배달 완료 알림 API (예쁜 버전)
+// ✅ Make → 배달 완료 알림 API
 app.post("/delivered", async (req, res) => {
   const { secret, recipientName, recipientId } = req.body;
   if (secret !== API_SECRET) {
     return res.status(401).json({ error: "Unauthorized" });
   }
+
+  // Make에 즉시 응답 먼저!
+  res.json({ success: true });
+
+  // Discord 전송은 백그라운드에서
   try {
     const monitoringChannel = await client.channels.fetch(
       MONITORING_CHANNEL_ID,
     );
-
     const embed = new EmbedBuilder()
       .setColor(0x57f287)
       .setAuthor({
@@ -74,10 +78,8 @@ app.post("/delivered", async (req, res) => {
       .setTimestamp();
 
     await monitoringChannel.send({ embeds: [embed] });
-    res.json({ success: true });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Failed to send" });
+    console.error("Discord 전송 실패:", err);
   }
 });
 
