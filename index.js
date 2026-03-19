@@ -12,7 +12,7 @@ const client = new Client({
     GatewayIntentBits.DirectMessages,
     GatewayIntentBits.MessageContent,
   ],
-  partials: ["CHANNEL", "MESSAGE"],
+  partials: [Partials.Channel, Partials.Message], // 문자열 말고 enum으로!
 });
 
 const MONITORING_CHANNEL_ID = process.env.MONITORING_CHANNEL_ID;
