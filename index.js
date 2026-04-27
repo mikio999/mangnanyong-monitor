@@ -24,7 +24,7 @@ const client = new Client({
     GatewayIntentBits.DirectMessages,
     GatewayIntentBits.MessageContent,
   ],
-  partials: [Partials.Channel, Partials.Message],
+  partials: [Partials.Channel, Partials.Message, Partials.User],
 });
 
 const MONITORING_CHANNEL_ID = process.env.MONITORING_CHANNEL_ID;
